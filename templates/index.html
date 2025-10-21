@@ -123,11 +123,23 @@
             }
         }
 
+        function formatText(text) {
+            // Convert **text** to bold
+            text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            // Convert line breaks to <br>
+            text = text.replace(/\n/g, '<br>');
+            return text;
+        }
+
         function addMessage(content, isUser = false) {
             const chatContainer = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-            messageDiv.textContent = content;
+            if (isUser) {
+                messageDiv.textContent = content;
+            } else {
+                messageDiv.innerHTML = formatText(content);
+            }
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
@@ -211,11 +223,11 @@
                                 const parsed = JSON.parse(data);
                                 if (parsed.content) {
                                     botResponse += parsed.content;
-                                    botMessageDiv.textContent = botResponse;
+                                    botMessageDiv.innerHTML = formatText(botResponse);
                                     document.getElementById('chatContainer').scrollTop = 
                                         document.getElementById('chatContainer').scrollHeight;
                                 } else if (parsed.error) {
-                                    botMessageDiv.textContent = `Sorry, I encountered an error: ${parsed.error}`;
+                                    botMessageDiv.innerHTML = `Sorry, I encountered an error: ${parsed.error}`;
                                 }
                             } catch (e) {
                                 console.error('Error parsing JSON:', e);
