@@ -1,8 +1,12 @@
 from flask import Flask, render_template, request, Response
 import json
 import os
+from dotenv import load_dotenv
 import google.generativeai as genai
 from faq_data import FAQ_DATA
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Google Gemini configuration
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
