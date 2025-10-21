@@ -126,6 +126,8 @@
         function formatText(text) {
             // Convert **text** to bold
             text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            // Convert URLs to clickable links
+            text = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color: #007bff; text-decoration: underline;">$1</a>');
             // Convert line breaks to <br>
             text = text.replace(/\n/g, '<br>');
             return text;

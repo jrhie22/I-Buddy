@@ -21,8 +21,16 @@ for accordion in soup.select("dl.ckeditor-accordion"):
         # Get text from the answer, preserving links
         answer = answer_tag.get_text(" ", strip=True)
         
-        # Extract any links from the answer
-        links = [URL]
+        # Fix email format: convert [at] to @ and [dot] to .
+        answer = answer.replace('[at]', '@').replace('[dot]', '.')
+        # Remove the redundant email format like "iso gwu . edu ( iso@gwu.edu )"
+        import re
+        answer = re.sub(r'(\w+)\s+gwu\s+\.\s+edu\s+\(\s*(\1@gwu\.edu)\s*\)', r'\2', answer)
+        # Clean up any remaining "word word . word" patterns to proper emails
+        answer = re.sub(r'(\w+)\s+gwu\s+\.\s+edu', r'\1@gwu.edu', answer)
+        
+        # Extract links from the answer (get the first relevant one, skip main FAQ URL)
+        links = []
         for link in answer_tag.find_all("a", href=True):
             href = link['href']
             # Make relative URLs absolute
@@ -30,8 +38,13 @@ for accordion in soup.select("dl.ckeditor-accordion"):
                 href = f"https://business.gwu.edu{href}"
             elif not href.startswith('http'):
                 href = f"https://business.gwu.edu/{href}"
-            if href not in links:
+            # Only keep the first unique link (most relevant)
+            if href != URL and href not in links and len(links) < 1:
                 links.append(href)
+        
+        # If no specific link found, use the main FAQ URL
+        if not links:
+            links = [URL]
         
         faq_data.append({
             "question": question,

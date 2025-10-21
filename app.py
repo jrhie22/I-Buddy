@@ -25,9 +25,9 @@ Be friendly, encouraging, and clear — like a supportive school staff member.
 1. Jump straight to answering - NO greetings like "Hello!" or "Hi there!" except for the very first interaction message.
 2. Start with a brief summary (2-3 sentences) - don't write "TL;DR:", just provide the summary directly.
 3. Follow with concise key points or numbered steps (limit to 4-5).
-4. Add relevant source links at the end, labeled clearly.
+4. Provide ONLY ONE most relevant source link (as full URL: https://...).
 5. Keep total length under 200 words unless absolutely necessary.
-6. Use **double asterisks** for bold text on important terms.
+6. Use **double asterisks** around important terms for bold (e.g., **visa**, **deadline**).
 7. Use line breaks between paragraphs for readability.
 
 === CONTENT RULES ===
@@ -64,11 +64,12 @@ def stream_response():
                 yield f"data: {json.dumps({'error': 'Gemini API key not configured'})}\n\n"
                 return
             
-            # Create FAQ context for the AI with links
+            # Create FAQ context for the AI with links (only first link per FAQ)
             faq_context = ""
             for faq in FAQ_DATA:
-                links_text = ", ".join(faq.get('links', []))
-                faq_context += f"Q: {faq['question']}\nA: {faq['answer']}\nSources: {links_text}\n\n"
+                links = faq.get('links', [])
+                first_link = links[0] if links else ""
+                faq_context += f"Q: {faq['question']}\nA: {faq['answer']}\nSource: {first_link}\n\n"
             
             # Enhanced system prompt that emphasizes using FAQ data first
             enhanced_system_prompt = f"""{SYSTEM_PROMPT}
