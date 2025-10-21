@@ -1,18 +1,13 @@
 from flask import Flask, render_template, request, Response
 import json
 import os
-from huggingface_hub import InferenceClient
+import requests
 from faq_data import FAQ_DATA
 
 # Hugging Face configuration
 HF_MODEL = os.getenv("HF_MODEL", "google/gemma-2-2b-it")
+HF_API_URL = f"https://api-inference.huggingface.co/models/{HF_MODEL}"
 HF_TOKEN = os.getenv("HF_TOKEN")
-
-# Initialize Hugging Face Inference Client
-if HF_TOKEN:
-    client = InferenceClient(token=HF_TOKEN)
-else:
-    client = None
 
 # System prompt for the AI assistant
 SYSTEM_PROMPT = """
@@ -61,7 +56,7 @@ def stream_response():
     
     def generate():
         try:
-            if not client:
+            if not HF_TOKEN:
                 yield f"data: {json.dumps({'error': 'Hugging Face token not configured'})}\n\n"
                 return
             
@@ -93,38 +88,41 @@ Below is the official GW FAQ database for international students. This is your P
 5. Always prioritize accuracy over completeness—if unsure, direct them to the right office.
 """
             
-            # Prepare messages for chat completion
-            messages = [
-                {
-                    "role": "system",
-                    "content": enhanced_system_prompt
-                },
-                {
-                    "role": "user",
-                    "content": question
-                }
-            ]
+            # Prepare the full prompt for Hugging Face
+            full_prompt = f"{enhanced_system_prompt}\n\nStudent Question: {question}\n\nAssistant:"
             
-            # Call Hugging Face Inference API with streaming
-            stream = client.chat.completions.create(
-                model=HF_MODEL,
-                messages=messages,
-                max_tokens=500,
-                stream=True
-            )
+            # Make request to Hugging Face API
+            headers = {"Authorization": f"Bearer {HF_TOKEN}"}
+            payload = {"inputs": full_prompt}
             
-            # Stream the response token by token
-            for chunk in stream:
-                if chunk.choices[0].delta.content:
-                    content = chunk.choices[0].delta.content
-                    yield f"data: {json.dumps({'content': content})}\n\n"
+            response = requests.post(HF_API_URL, headers=headers, json=payload, timeout=60)
             
-            yield f"data: [DONE]\n\n"
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Extract the generated text
+                if isinstance(data, list) and len(data) > 0:
+                    generated_text = data[0].get("generated_text", "")
+                    # Remove the original prompt from the response
+                    answer = generated_text.replace(full_prompt, "").strip()
+                else:
+                    answer = str(data)
+                
+                # Stream the response word by word
+                words = answer.split()
+                for word in words:
+                    chunk = word + " "
+                    yield f"data: {json.dumps({'content': chunk})}\n\n"
+                
+                yield f"data: [DONE]\n\n"
+            else:
+                error_msg = f"Hugging Face API error: {response.status_code} - {response.text}"
+                yield f"data: {json.dumps({'error': error_msg})}\n\n"
             
+        except requests.exceptions.Timeout:
+            yield f"data: {json.dumps({'error': 'Request timed out. Please try again.'})}\n\n"
         except Exception as e:
-            error_msg = f"Error: {str(e)}"
-            print(f"Hugging Face API Error: {error_msg}")
-            yield f"data: {json.dumps({'error': error_msg})}\n\n"
+            yield f"data: {json.dumps({'error': str(e)})}\n\n"
     
     return Response(generate(), mimetype='text/event-stream')
     
