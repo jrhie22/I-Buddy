@@ -10,7 +10,7 @@ HF_TOKEN = os.getenv("HF_TOKEN")
 
 # Initialize Hugging Face Inference Client
 if HF_TOKEN:
-    client = InferenceClient(api_key=HF_TOKEN)
+    client = InferenceClient(token=HF_TOKEN)
 else:
     client = None
 
