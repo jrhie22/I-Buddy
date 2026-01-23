@@ -1,6 +1,6 @@
-GW I-Buddy
+**Project Initiation**
 
-<Project Initiation>
+
 As I've been attending new student orientation as an advisory board, I've noticed how international students at GWSB have been asking similar inquiries every semester. 
 So, I asked myself if there's an unknown problem causing students not being able to navigate basic information and came up with a few hypothesis as below.
 
@@ -15,16 +15,26 @@ With 35 respondents in total, I found 3 important patterns.
 2) Information access is slow and fragmented: it causing delays and frustration when students seek timely answers.
 3) Unclear or delayed guidance increases stress: international students who are adapting to a new system are struggling with unclear guidance.
 
-<Project Journey>
+
+**Project Journey Tracking**
+
+
 **July 2025**
-To test project feasibility, created a very basic prototype to prove how the chatbot would look like, using ollama (llama 3.1 model) and manually scraped json file.
-Presented prototype to G&EE staff and received approval to take next steps and build upon the initial idea.
-Asked for project advisor to act as a key stakeholder from G&EE department.
+</br>
+-To test project feasibility, created a very basic prototype to prove how the chatbot would look like, using ollama (llama 3.1 model) and manually scraped json file.
+
+-Presented prototype to G&EE staff and received approval to take next steps and build upon the initial idea.
+
+-Asked for project advisor to act as a key stakeholder from G&EE department.
 
 **Sep 2025**
-Designed and conducted survey with project advisor to validate problem statement hypothesis.
-Tried models from HuggingFace and eventually moved to using Gemini 2.5 API due to cost-efficiency.
-Built Python web scraper to automate the web scraping process from school's official resources. 
+</br>
+-Designed and conducted survey with project advisor to validate problem statement hypothesis.
+
+-Tried models from HuggingFace and eventually moved to using Gemini 2.5 API due to cost-efficiency.
+
+-Built Python web scraper to automate the web scraping process from school's official resources. 
 
 **Oct 2025**
-Presented updated version of GW I-Buddy to leadership, started preparation for security compliance with GW IT team.
+</br>
+-Presented updated version of GW I-Buddy to leadership, started preparation for security compliance with GW IT team.
