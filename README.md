@@ -1,4 +1,8 @@
-**Project Initiation**
+<h2 align="center">GW I-Buddy</h2>
+<h3 align="center">AI Information Governance & Student Support Prototype</h3>
+
+
+## Project Initiation
 
 
 As I've been attending new student orientation as an advisory board, I've noticed how international students at GWSB have been asking similar inquiries every semester. 
@@ -16,7 +20,7 @@ With 35 respondents in total, I found 3 important patterns.
 3) Unclear or delayed guidance increases stress: international students who are adapting to a new system are struggling with unclear guidance.
 
 
-**Project Journey Tracking**
+## Project Tracking Initiation
 
 
 **July 2025**
