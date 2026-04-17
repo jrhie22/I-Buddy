@@ -46,7 +46,7 @@ Be friendly, encouraging, and clear — like a supportive school staff member.
 
 print("Starting Flask app...")
 print("FAQ_DATA loaded:", len(FAQ_DATA), "items")
-print("Using Google Gemini: gemini-2.5-flash")
+print("Using Google Gemini: gemini-2.5-flash") # change everytime model updates?
 
 app = Flask(__name__)
 
@@ -118,5 +118,5 @@ Below is the official GW FAQ database for international students. This is your P
 if __name__ == "__main__":
     import os
     port = int(os.environ.get('PORT', 5000))
-    print("Starting GW I-Buddy...")
+    print("Starting I-Buddy...")
     app.run(host='0.0.0.0', port=port, debug=False)
