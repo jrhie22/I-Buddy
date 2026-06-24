@@ -8,7 +8,7 @@
 As I've been attending new student orientation as an advisory board, I've noticed how international students at GWSB have been asking similar inquiries every semester. 
 So, I asked myself if there's an unknown problem causing students not being able to navigate basic information and came up with a few hypothesis as below.
 
-1) Given that the people asking those questions were not only incoming students (lacking general info with GW) but also international students, mostly first time visiting the U.S, seemed like they were very anxious
+1) Given that the people asking those questions were incoming international students, the majority first-time visiting the U.S, seemed like they were very anxious
    when it comes to problems such as housing, making friends, difficulty of classes, etc. which cannot be answered easily from FAQs
 2) For some very 'basic' questions, it's still easy to ask someone as they get accurate information much quicker.
 
